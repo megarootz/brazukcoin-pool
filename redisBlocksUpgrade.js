@@ -18,7 +18,7 @@ require('./lib/configReader.js');
 var apiInterfaces = require('./lib/apiInterfaces.js')(config.daemon, config.wallet);
 
 
-function log(severity, system, text, data){
+function log(severity, system, text, data) {
 
     var formattedMessage = text;
 
@@ -35,16 +35,16 @@ var logSystem = 'reward script';
 
 var redisClient = redis.createClient(config.redis.port, config.redis.host);
 
-function getTotalShares(height, callback){
+function getTotalShares(height, callback) {
 
-    redisClient.hgetall(config.coin + ':shares:round' + height, function(err, workerShares){
+    redisClient.hgetall(config.coin + ':shares:round' + height, function (err, workerShares) {
 
         if (err) {
             callback(err);
             return;
         }
 
-        var totalShares = Object.keys(workerShares).reduce(function(p, c){
+        var totalShares = Object.keys(workerShares).reduce(function (p, c) {
             return p + parseInt(workerShares[c])
         }, 0);
 
@@ -55,20 +55,20 @@ function getTotalShares(height, callback){
 
 
 async.series([
-    function(callback){
-        redisClient.smembers(config.coin + ':blocksUnlocked', function(error, result){
-            if (error){
+    function (callback) {
+        redisClient.smembers(config.coin + ':blocksUnlocked', function (error, result) {
+            if (error) {
                 log('error', logSystem, 'Error trying to get unlocke blocks from redis %j', [error]);
                 callback();
                 return;
             }
-            if (result.length === 0){
+            if (result.length === 0) {
                 log('info', logSystem, 'No unlocked blocks in redis');
                 callback();
                 return;
             }
 
-            var blocks = result.map(function(item){
+            var blocks = result.map(function (item) {
                 var parts = item.split(':');
                 return {
                     height: parseInt(parts[0]),
@@ -80,14 +80,14 @@ async.series([
                 };
             });
 
-            async.map(blocks, function(block, mapCback){
-                apiInterfaces.rpcDaemon('getblockheaderbyheight', {height: block.height}, function(error, result){
-                    if (error){
+            async.map(blocks, function (block, mapCback) {
+                apiInterfaces.rpcDaemon('getblockheaderbyheight', { height: block.height }, function (error, result) {
+                    if (error) {
                         log('error', logSystem, 'Error with getblockheaderbyheight RPC request for block %s - %j', [block.serialized, error]);
                         mapCback(null, block);
                         return;
                     }
-                    if (!result.block_header){
+                    if (!result.block_header) {
                         log('error', logSystem, 'Error with getblockheaderbyheight, no details returned for %s - %j', [block.serialized, result]);
                         mapCback(null, block);
                         return;
@@ -96,9 +96,9 @@ async.series([
                     block.reward = blockHeader.reward;
                     mapCback(null, block);
                 });
-            }, function(err, blocks){
+            }, function (err, blocks) {
 
-                if (blocks.length === 0){
+                if (blocks.length === 0) {
                     log('info', logSystem, 'No unlocked blocks');
                     callback();
                     return;
@@ -106,7 +106,7 @@ async.series([
 
                 var zaddCommands = [config.coin + ':blocks:matured'];
 
-                for (var i = 0; i < blocks.length; i++){
+                for (var i = 0; i < blocks.length; i++) {
                     var block = blocks[i];
                     zaddCommands.push(block.height);
                     zaddCommands.push([
@@ -119,8 +119,8 @@ async.series([
                     ].join(':'));
                 }
 
-                redisClient.zadd(zaddCommands, function(err, result){
-                    if (err){
+                redisClient.zadd(zaddCommands, function (err, result) {
+                    if (err) {
                         console.log('failed zadd ' + JSON.stringify(err));
                         callback();
                         return;
@@ -133,8 +133,8 @@ async.series([
             });
         });
     },
-    function(callback){
-        redisClient.smembers(config.coin + ':blocksPending', function(error, result) {
+    function (callback) {
+        redisClient.smembers(config.coin + ':blocksPending', function (error, result) {
             if (error) {
                 log('error', logSystem, 'Error trying to get pending blocks from redis %j', [error]);
                 callback();
@@ -146,7 +146,7 @@ async.series([
                 return;
             }
 
-            async.map(result, function(item, mapCback){
+            async.map(result, function (item, mapCback) {
                 var parts = item.split(':');
                 var block = {
                     height: parseInt(parts[0]),
@@ -155,15 +155,15 @@ async.series([
                     time: parts[3],
                     serialized: item
                 };
-                getTotalShares(block.height, function(err, shares){
+                getTotalShares(block.height, function (err, shares) {
                     block.shares = shares;
                     mapCback(null, block);
                 });
-            }, function(err, blocks){
+            }, function (err, blocks) {
 
                 var zaddCommands = [config.coin + ':blocks:candidates'];
 
-                for (var i = 0; i < blocks.length; i++){
+                for (var i = 0; i < blocks.length; i++) {
                     var block = blocks[i];
                     zaddCommands.push(block.height);
                     zaddCommands.push([
@@ -174,8 +174,8 @@ async.series([
                     ].join(':'));
                 }
 
-                redisClient.zadd(zaddCommands, function(err, result){
-                    if (err){
+                redisClient.zadd(zaddCommands, function (err, result) {
+                    if (err) {
                         console.log('failed zadd ' + JSON.stringify(err));
                         return;
                     }
@@ -186,6 +186,6 @@ async.series([
 
         });
     }
-], function(){
+], function () {
     process.exit();
 });
