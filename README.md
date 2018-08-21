@@ -1,11 +1,9 @@
-## This repo is looking for maintainers! Please reach out if interested.
---------
 
 
-node-cryptonote-pool
+brazukcoin-pool
 ====================
 
-High performance Node.js (with native C addons) mining pool for CryptoNote based coins such as Bytecoin, Monero, QuazarCoin, HoneyPenny, etc..
+High performance Node.js (with native C addons) mining pool for CryptoNote based coins such as Brazukcoin, Bytecoin, Monero, QuazarCoin, HoneyPenny, etc..
 Comes with lightweight example front-end script which uses the pool's AJAX API.
 
 
@@ -61,17 +59,14 @@ Comes with lightweight example front-end script which uses the pool's AJAX API.
 
 ### Community / Support
 
-* [CryptoNote Forum](https://forum.cryptonote.org/)
-* [Bytecoin Github](https://github.com/amjuarez/bytecoin)
-* [Monero Github](https://github.com/monero-project/bitmonero)
-* [Monero Announcement Thread](https://bitcointalk.org/index.php?topic=583449.0)
-* IRC (freenode)
-  * Support / general discussion join #monero: https://webchat.freenode.net/?channels=#monero
-  * Development discussion join #monero-dev: https://webchat.freenode.net/?channels=#monero-dev
+* [Brazukcoin Forum](https://discord.gg/KUKP3GU)
+* [Brazukcoin Github](https://github.com/amjuarez/bytecoin)
+* [Brazukcoin Announcement Thread](https://bitcointalk.org/index.php?topic=2684213)
 
 
 #### Pools Using This Software
 
+* http://pool.brazukcoin.org/
 * http://xminingpool.com
 * http://xmr.poolto.be
 * https://moneropool.com
@@ -85,22 +80,12 @@ Usage
 ===
 
 #### Requirements
-* Coin daemon(s) (find the coin's repo and build latest version from source)
-* [Node.js](http://nodejs.org/) v0.10+ ([follow these installation instructions](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager))
-* [Redis](http://redis.io/) key-value store v2.6+ ([follow these instructions](http://redis.io/topics/quickstart))
-* libssl required for the node-multi-hashing module
-  * For Ubuntu: `sudo apt-get install libssl-dev`
-* Boost is required for the cryptonote-util module
-  * For Ubuntu: `sudo apt-get install libboost-all-dev`
+* Brazukcoin daemon: [get it here](https://github.com/brazukcoin/wallet)
+* Node.js v0.10+: `sudo apt-get install nodejs-legacy`
+* Redis: `sudo apt-get install redis-server`
+* LibSSL: `sudo apt-get install libssl-dev`
+* Boost: `sudo apt-get install libboost-all-dev`
 
-
-##### Seriously
-Those are legitimate requirements. If you use old versions of Node.js or Redis that may come with your system package manager then you will have problems. Follow the linked instructions to get the last stable versions.
-
-
-[**Redis security warning**](http://redis.io/topics/security): be sure firewall access to redis - an easy way is to
-include `bind 127.0.0.1` in your `redis.conf` file. Also it's a good idea to learn about and understand software that
-you are using - a good place to start with redis is [data persistence](http://redis.io/topics/persistence).
 
 
 #### 1) Downloading & Installing
@@ -109,8 +94,8 @@ you are using - a good place to start with redis is [data persistence](http://re
 Clone the repository and run `npm update` for all the dependencies to be installed:
 
 ```bash
-git clone https://github.com/zone117x/node-cryptonote-pool.git pool
-cd pool
+git clone https://github.com/brazukcoin/brazukcoin-pool
+cd brazukcoin-pool
 
 nvm install 0.10.48
 nvm use 0.10.48
@@ -123,7 +108,7 @@ npm update
 #### 2) Configuration
 
 
-*Warning for Cyrptonote coins other than Monero:* this software may or may not work with any given cryptonote coin.
+*Warning for Cyrptonote coins other than Brazukcoin:* this software may or may not work with any given cryptonote coin.
 Be wary of altcoins that change the number of minimum coin units because you will have to reconfigure several config
 values to account for those changes. Unless you're offering a bounty reward - do not open an issue asking for help
 getting a coin other than Monero working with this software.
@@ -134,11 +119,12 @@ Copy the `config_example.json` file to `config.json` then overview each options 
 
 Explanation for each field:
 ```javascript
+{
 /* Used for storage in redis so multiple coins can share the same redis instance. */
-"coin": "monero",
+"coin": "Brazukcoin",
 
 /* Used for front-end display */
-"symbol": "MRO",
+"symbol": "BZK",
 
 "logging": {
 
@@ -174,7 +160,7 @@ Explanation for each field:
     "clusterForks": "auto",
 
     /* Address where block rewards go, and miner payments come from. */
-    "poolAddress": "4AsBy39rpUMTmgTUARGq2bFQWhDhdQNekK5v4uaLU699NPAnx9CubEJ82AkvD5ScoAZNYRwBxybayainhyThHAZWCdKmPYn"
+    "poolAddress": "br2xMvd7MkQHTFHK6yo6wBiHmN5H2NZ9uXKd6s8S4WhzMXHL1SwGFGhiaXpu5hQF8WjJr7TBcLPzrWSf16TU1g7J1n55CbPHh"
 
     /* Poll RPC daemons for new blocks every this many milliseconds. */
     "blockRefreshInterval": 1000,
