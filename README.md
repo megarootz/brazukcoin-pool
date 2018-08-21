@@ -85,6 +85,7 @@ Usage
 * Redis: `sudo apt-get install redis-server`
 * LibSSL: `sudo apt-get install libssl-dev`
 * Boost: `sudo apt-get install libboost-all-dev`
+* build-essential: `sudo apt-get install build-essential`
 
 
 
