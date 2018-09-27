@@ -1,9 +1,9 @@
 {
-    "coin": "Brazukcoin",
-    "symbol": "BZK",
-    "coinUnits": 1000000000000,
+    "coin": "BitPrivate",
+    "symbol": "BPVT",
+    "coinUnits": 100000000,
     "coinDifficultyTarget": 240,
-    "version": "v2.1.1",
+    "version": "v2.0.0",
     "logging": {
         "files": {
             "level": "info",
@@ -24,7 +24,7 @@
         "bonusChance": 1,
         "blockFinderBonus": 0.01,
         "clusterForks": "auto",
-        "poolAddress": "br2xMvd7MkQHTFHK6yo6wBiHmN5H2NZ9uXKd6s8S4WhzMXHL1SwGFGhiaXpu5hQF8WjJr7TBcLPzrWSf16TU1g7J1n55CbPHh",
+        "poolAddress": "btPVTxrLiWN5nS1Kzh5wLKB5mM7cMkecteLC3Fx6eArLYRVgkBUcSmKYK9FLpXAs1jMWHn6LgrjrJNN6woSsEmWmNraW1VjSTj14s",
         "blockRefreshInterval": 1000,
         "minerTimeout": 900,
         "ports": [
@@ -109,12 +109,12 @@
         "password": "CHANGE_THIS_PASSWORD-keep-it-safe!"
     },
     "daemon": {
-        "host": "127.0.0.1",
-        "port": 44043
+        "host": "159.65.132.179",
+        "port": 17236
     },
     "wallet": {
-        "host": "127.0.0.1",
-        "port": 18093
+        "host": "206.189.232.35",
+        "port": 18236
     },
     "redis": {
         "host": "127.0.0.1",
